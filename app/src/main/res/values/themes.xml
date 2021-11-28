@@ -13,4 +13,42 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textSize">15sp</item>
+        <item name="android:drawablePadding">15dp</item>
+        <item name="android:textColorHint">@color/grey_300</item>
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+    </style>
+
+    <style name="TextStyleLight" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/_10sp</item>
+        <item name="android:textColor">@color/grey_300</item>
+    </style>
+
+
+    <style name="tab_layout">
+        <item name="tabIndicatorColor">@color/grey</item>
+        <item name="tabTextColor">@color/grey</item>
+        <item name="android:background">@color/grey_dark</item>
+    </style>
+
+    <style name="backgroundDark">
+        <item name="android:background">@color/black</item>
+    </style>
+
+    <style name="backgroundLight">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="textLight">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="textDark">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
 </resources>
