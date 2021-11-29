@@ -5,4 +5,7 @@
     <string name="txt_search">Search User</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_image">Error Image</string>
+    <string name="txt_followers">Followers</string>
+    <string name="txt_following">Following</string>
 </resources>

@@ -18,10 +18,7 @@ class ViewPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activ
         when (position) {
             0 -> fragment = FollowerFragment.newInstance(username ?: "")
             1 -> fragment = FollowingFragment.newInstance(username ?: "")
-
         }
         return fragment as Fragment
-
     }
-
 }

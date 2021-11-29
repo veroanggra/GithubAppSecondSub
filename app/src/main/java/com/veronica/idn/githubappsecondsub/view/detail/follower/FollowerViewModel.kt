@@ -3,6 +3,7 @@ package com.veronica.idn.githubappsecondsub.view.detail.follower
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.veronica.idn.githubappsecondsub.domain.data.model.ItemsItem
 import com.veronica.idn.githubappsecondsub.domain.data.model.UserResponse
 import com.veronica.idn.githubappsecondsub.domain.data.network.ApiResult
 import com.veronica.idn.githubappsecondsub.domain.repository.UserRepository
@@ -16,9 +17,10 @@ import javax.inject.Inject
 @HiltViewModel
 class FollowerViewModel @Inject constructor(private val userRepository: UserRepository) :
     ViewModel() {
+
     private var strUserName: String = ""
 
-    private val _followersLiveData = MutableLiveData<List<UserResponse?>?>()
+    private val _followersLiveData = MutableLiveData<List<ItemsItem?>?>()
     val followerLiveData get() = _followersLiveData
 
     private val _loading: MutableLiveData<Boolean> = MutableLiveData()

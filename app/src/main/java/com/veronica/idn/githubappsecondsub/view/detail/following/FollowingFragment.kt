@@ -5,43 +5,100 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.veronica.idn.githubappsecondsub.R
+import com.veronica.idn.githubappsecondsub.databinding.FragmentFollowingBinding
 import com.veronica.idn.githubappsecondsub.view.detail.follower.FollowerFragment
+import com.veronica.idn.githubappsecondsub.view.home.MainAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FollowingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class FollowingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var followingBinding: FragmentFollowingBinding
+    private lateinit var followingViewModel: FollowingViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_following, container, false)
+    ): View {
+        followingBinding = FragmentFollowingBinding.inflate(layoutInflater)
+        setViewModelProvider()
+        setRecyclerView()
+        observeData()
+        loading()
+        setError()
+        return followingBinding.root
+    }
+
+    private fun setError() {
+        followingViewModel.error.observe(viewLifecycleOwner, {
+            if (it == null){
+                followingBinding.apply {
+                    ivErrorFollowing.visibility = View.GONE
+                    rvFollowing.visibility = View.VISIBLE
+                }
+            }else{
+                followingBinding.apply {
+                    ivErrorFollowing.visibility = View.VISIBLE
+                    rvFollowing.visibility = View.GONE
+                }
+            }
+        })
+    }
+
+    private fun loading() {
+        followingViewModel.loading.observe(viewLifecycleOwner, { isLoading ->
+            if (isLoading) {
+                followingBinding.apply {
+                    pbFollowing.visibility = View.VISIBLE
+                    rvFollowing.visibility = View.GONE
+                }
+            } else {
+                followingBinding.apply {
+                    pbFollowing.visibility = View.GONE
+                    rvFollowing.visibility = View.VISIBLE
+                }
+            }
+        })
+    }
+
+    private fun observeData() {
+        val username = arguments?.getString(USERNAME)
+        followingViewModel.getFollowing(username ?: "")
+        followingViewModel.followingLiveData.observe(viewLifecycleOwner, { listFollowing ->
+            if ((listFollowing?.size ?: 0) == 0) {
+                followingBinding.apply {
+                    ivErrorFollowing.visibility = View.VISIBLE
+                    rvFollowing.visibility = View.GONE
+                }
+            } else {
+                followingBinding.apply {
+                    pbFollowing.visibility = View.GONE
+                    rvFollowing.visibility = View.VISIBLE
+
+                    val mainAdapter = MainAdapter(listFollowing)
+                    rvFollowing.adapter = mainAdapter
+                }
+            }
+        })
+    }
+
+    private fun setViewModelProvider() {
+        followingViewModel = ViewModelProvider(this)[FollowingViewModel::class.java]
+    }
+
+    private fun setRecyclerView() {
+        followingBinding.rvFollowing.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = MainAdapter(listOf())
+        }
     }
 
     companion object {
         private const val USERNAME = "username"
-        fun newInstance(username: String) : Fragment{
+        fun newInstance(username: String): Fragment {
             val fragment = FollowingFragment()
             val bundle = Bundle()
             bundle.putString(USERNAME, username)

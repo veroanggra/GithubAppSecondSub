@@ -3,19 +3,23 @@ package com.veronica.idn.githubappsecondsub.view.detail.following
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.veronica.idn.githubappsecondsub.domain.data.model.ItemsItem
 import com.veronica.idn.githubappsecondsub.domain.data.model.UserResponse
 import com.veronica.idn.githubappsecondsub.domain.data.network.ApiResult
 import com.veronica.idn.githubappsecondsub.domain.repository.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class FollowingViewModel @Inject constructor(private val userRepository: UserRepository) :
     ViewModel() {
+
     private var strUsername: String = ""
-    private val _followingLiveData = MutableLiveData<List<UserResponse?>?>()
+    private val _followingLiveData = MutableLiveData<List<ItemsItem?>?>()
     val followingLiveData get() = _followingLiveData
 
     private val _loading: MutableLiveData<Boolean> = MutableLiveData()
@@ -28,7 +32,6 @@ class FollowingViewModel @Inject constructor(private val userRepository: UserRep
         if (strUsername != username) {
             viewModelScope.launch {
                 strUsername = username
-
                 userRepository.getFollowing(username).onStart {
                     _loading.value = true
                 }.onCompletion {

@@ -3,9 +3,14 @@ package com.veronica.idn.githubappsecondsub.view.detail.dashboard
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import com.veronica.idn.githubappsecondsub.R
+import com.veronica.idn.githubappsecondsub.adapter.ViewPagerAdapter
 import com.veronica.idn.githubappsecondsub.databinding.ActivityDetailBinding
 import com.veronica.idn.githubappsecondsub.domain.data.model.ItemsItem
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,8 +28,19 @@ class DetailActivity : AppCompatActivity() {
         getDataObject()
         setViewModelProvider()
         observeData()
-        Loading()
+        loading()
         errorSetup()
+        setViewPager()
+    }
+
+    private fun setViewPager() {
+        val viewPagerAdapter = ViewPagerAdapter(this)
+        viewPagerAdapter.username = user?.login
+        detailBinding.vpDetail.adapter = viewPagerAdapter
+        val tabLayout: TabLayout = detailBinding.tlDetail
+        TabLayoutMediator(tabLayout, detailBinding.vpDetail){tab, position ->
+            tab.text = resources.getString(TAB_TITLES[position])
+        }.attach()
     }
 
     private fun errorSetup() {
@@ -39,7 +55,7 @@ class DetailActivity : AppCompatActivity() {
         })
     }
 
-    private fun Loading() {
+    private fun loading() {
         detailViewModel.loading.observe(this, {isLoading ->
             if (isLoading){
                 detailBinding.pbDetail.visibility = View.VISIBLE
@@ -72,5 +88,10 @@ class DetailActivity : AppCompatActivity() {
 
     companion object{
         const val EXTRA_DATA = "extra_data"
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.txt_followers,
+            R.string.txt_following
+        )
     }
 }

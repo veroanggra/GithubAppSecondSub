@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.veronica.idn.githubappsecondsub.R
 import com.veronica.idn.githubappsecondsub.databinding.FragmentFollowerBinding
 import com.veronica.idn.githubappsecondsub.view.home.MainAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class FollowerFragment : Fragment() {
 
     private lateinit var followerBinding: FragmentFollowerBinding
@@ -22,10 +23,43 @@ class FollowerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         followerBinding = FragmentFollowerBinding.inflate(layoutInflater)
-        showFollower()
         setViewModelProvider()
+        showFollower()
         observeData()
-        return inflater.inflate(R.layout.fragment_follower, container, false)
+        loading()
+        setError()
+        return followerBinding.root
+    }
+
+    private fun setError() {
+        followerViewModel.error.observe(viewLifecycleOwner, {
+            if (it == null){
+                followerBinding.apply {
+                    ivErrorFollower.visibility = View.GONE
+                    rvFollower.visibility = View.VISIBLE  }
+            }else{
+                followerBinding.apply {
+                    ivErrorFollower.visibility = View.VISIBLE
+                    rvFollower.visibility = View.GONE
+                }
+            }
+        })
+    }
+
+    private fun loading() {
+        followerViewModel.loading.observe(viewLifecycleOwner, { isLoading ->
+            if (isLoading){
+                followerBinding.apply {
+                    pbFollower.visibility = View.VISIBLE
+                    rvFollower.visibility = View.GONE
+                }
+            }else{
+                followerBinding.apply {
+                    pbFollower.visibility = View.GONE
+                    rvFollower.visibility = View.VISIBLE
+                }
+            }
+        })
     }
 
     private fun observeData() {
@@ -35,13 +69,16 @@ class FollowerFragment : Fragment() {
             followerLiveData.observe(viewLifecycleOwner, {it ->
                 if ((it?.size ?: 0) == 0) {
                     followerBinding.apply {
-                        pbFollower.visibility = View.GONE
+                        ivErrorFollower.visibility = View.VISIBLE
+                        rvFollower.visibility = View.GONE
                     }
                 } else {
                     followerBinding.apply {
-                        pbFollower.visibility = View.GONE
-                        val mainAdapter = MainAdapter(it)
+                        ivErrorFollower.visibility = View.GONE
+                        rvFollower.visibility = View.VISIBLE
 
+                        val mainAdapter = MainAdapter(it)
+                        rvFollower.adapter = mainAdapter
                     }
                 }
             })
@@ -54,9 +91,11 @@ class FollowerFragment : Fragment() {
     }
 
     private fun showFollower() {
-        followerBinding.rvFollower.setHasFixedSize(true)
-        followerBinding.rvFollower.layoutManager = LinearLayoutManager(context)
-        followerBinding.rvFollower.adapter = MainAdapter(listOf())
+        followerBinding.rvFollower.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = MainAdapter(listOf())
+        }
     }
 
     companion object {
