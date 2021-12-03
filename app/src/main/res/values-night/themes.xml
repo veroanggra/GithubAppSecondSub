@@ -13,4 +13,19 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="backgroundDark">
+        <item name="android:background">@color/black</item>
+    </style>
+
+    <style name="backgroundLight">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="textLight">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="textDark">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

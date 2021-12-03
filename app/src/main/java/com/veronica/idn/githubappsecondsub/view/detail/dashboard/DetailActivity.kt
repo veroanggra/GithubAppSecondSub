@@ -75,7 +75,19 @@ class DetailActivity : AppCompatActivity() {
 
                 tvNameDetail.text = detail?.name ?: "NO AVAILABLE"
             }
+            detailViewModel.showFav(detail)
+            detailBinding.ivFavDetail.setOnClickListener{
+                detailViewModel.isFavUser(detail)
+            }
+            detailViewModel.isFav.observe(this, {isfav ->
+                if (isfav){
+                    detailBinding.ivFavDetail.setImageResource(R.drawable.ic_baseline_favorite_24_red)
+                }else{
+                    detailBinding.ivFavDetail.setImageResource(R.drawable.ic_baseline_favorite_border_24_red)
+                }
+            })
         })
+
     }
     private fun setViewModelProvider() {
         detailViewModel = ViewModelProvider(this)[DetailViewModel::class.java]

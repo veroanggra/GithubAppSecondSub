@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubAppSecondSub">
         <activity
+            android:name=".view.favorite.FavoriteActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.detail.dashboard.DetailActivity"
             android:exported="false" />
         <activity

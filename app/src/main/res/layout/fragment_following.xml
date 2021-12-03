@@ -5,6 +5,7 @@
     android:id="@+id/clFollowing"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/backgroundLight"
     tools:context=".view.detail.following.FollowingFragment" >
 
     <androidx.recyclerview.widget.RecyclerView
