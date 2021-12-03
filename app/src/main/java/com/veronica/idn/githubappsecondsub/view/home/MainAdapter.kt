@@ -16,7 +16,6 @@ class MainAdapter(private val listUser : List<ItemsItem?>?) :RecyclerView.Adapte
     }
 
 
-
     inner class MainViewHolder(var itemUserBinding: ItemUserBinding) : RecyclerView
     .ViewHolder(itemUserBinding.root)
 

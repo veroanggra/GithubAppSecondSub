@@ -57,7 +57,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun loading() {
         detailViewModel.loading.observe(this, {isLoading ->
-            if (isLoading){
+            if (isLoading ){
                 detailBinding.pbDetail.visibility = View.VISIBLE
             }else{
                 detailBinding.pbDetail.visibility = View.GONE
@@ -66,7 +66,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        detailViewModel.getDetailUser(user?.login ?: "")
+        detailViewModel.getDetailUser(user?.login ?: " ")
         detailViewModel.detailUser.observe(this, {detail ->
             detailBinding.apply {
                 Glide.with(this.root).load(detail?.avatar_url).apply(
@@ -77,7 +77,6 @@ class DetailActivity : AppCompatActivity() {
             }
         })
     }
-
     private fun setViewModelProvider() {
         detailViewModel = ViewModelProvider(this)[DetailViewModel::class.java]
     }
